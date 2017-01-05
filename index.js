@@ -289,11 +289,13 @@ ExtractTextPlugin.prototype.apply = function(compiler) {
 			extractedChunks.forEach(function(extractedChunk) {
 				if(extractedChunk.modules.length) {
 					extractedChunk.modules.sort(function(a, b) {
+					if(!options.ignoreOrder){
 						if(isInvalidOrder(a, b)) {
 							compilation.errors.push(new OrderUndefinedError(a.getOriginalModule()));
 							compilation.errors.push(new OrderUndefinedError(b.getOriginalModule()));
 						}
 						return getOrder(a, b);
+					}
 					});
 					var chunk = extractedChunk.originalChunk;
 					var source = this.renderExtractedChunk(extractedChunk);
